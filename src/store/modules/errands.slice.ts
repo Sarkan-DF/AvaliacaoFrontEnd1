@@ -4,7 +4,7 @@ import { ApiService } from '../../services/api.service';
 
 export const listErrandsAction = createAsyncThunk('errands/list', async () => {
   const result = await ApiService.listErrands('6047fc73-3f88-4210-9173-aefa878fceae');
-  // console.log(result.data);
+  console.log(result.data);
   return result.data?.errands ?? [];
 });
 
