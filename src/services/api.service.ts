@@ -1,21 +1,21 @@
 import axios from 'axios';
 import { LoginProps } from '../models/login.model';
-import { DeleteTransactionsProps, ListTransactionsProps, UpdateTransactionsProps } from '../models/transaction.model';
+import { DeleteTransactionsProps, ListTransactionsProps, UpdateTransactionsProps } from '../models/errands.model';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3333',
+  baseURL: 'http://localhost:3322'
 });
 
 interface ApiResponse {
-    ok: boolean;
-    message: string;
-    data?: any;
+  ok: boolean;
+  message: string;
+  data?: any;
 }
 
 export class ApiService {
-  public static async listTransactions(props: ListTransactionsProps): Promise<ApiResponse> {
+  public static async listErrands(iduser: string) {
     try {
-      const result = await api.get(`/users/${props.id}/transactions?type=${props.type}`);
+      const result = await api.get(`/login/${iduser}/errands`);
       return result.data;
     } catch (error: any) {
       console.log(error.response.data);

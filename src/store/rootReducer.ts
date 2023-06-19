@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import transactionsReducer from './modules/transactions.slice';
+import errandsReducer from './modules/errands.slice';
 import userReducer from './modules/user.slice';
 
 export const combinedReducers = combineReducers({
-  transactions: transactionsReducer,
-  user: userReducer,
+  errands: errandsReducer,
+  user: userReducer
 });
