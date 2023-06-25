@@ -9,14 +9,6 @@ export const ErrandsList = () => {
   return (
     <div>
       <ErrandsTable errands={errands} />
-      {/* <ul>
-        {errands.map(errand => (
-          <li key={errand.id}>
-            <p>{errand.title}</p>
-            <p>{errand.description}</p>
-          </li>
-        ))}
-      </ul> */}
     </div>
   );
 };

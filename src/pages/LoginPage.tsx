@@ -37,7 +37,7 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('');
 
   useEffect(() => {
-    if (user.id) {
+    if (user.idUser) {
       navigate('/');
       return;
     }
@@ -51,14 +51,12 @@ export const LoginPage = () => {
       password: event.target.password.value
     };
 
-    console.log(loginUser);
-
     dispatch(loginAction(loginUser));
   };
 
   return (
     <MainLayout>
-      <h3>Faça seu login abaixo</h3>
+      <h3>Login página de recados</h3>
 
       <Form onSubmit={submitLogin}>
         <Box>
@@ -92,6 +90,7 @@ export const LoginPage = () => {
             Login
           </Button>
         </Box>
+        <Box marginTop={2}>Não tem usuario? Clique Aqui!</Box>
       </Form>
     </MainLayout>
   );

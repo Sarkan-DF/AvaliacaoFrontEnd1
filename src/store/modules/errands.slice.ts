@@ -2,10 +2,13 @@ import { createAsyncThunk, createSlice, isAction } from '@reduxjs/toolkit';
 import { Errand } from '../../models/errands.model';
 import { ApiService } from '../../services/api.service';
 
-export const listErrandsAction = createAsyncThunk('errands/list', async () => {
-  const result = await ApiService.listErrands('6047fc73-3f88-4210-9173-aefa878fceae');
-  console.log(result.data);
-  return result.data?.errands ?? [];
+interface ListErrandsProps {
+  idUser: string;
+}
+
+export const listErrandsAction = createAsyncThunk('errands/list', async (props: ListErrandsProps) => {
+  const result = await ApiService.listErrands(props.idUser);
+  return result.data ?? [];
 });
 
 export const errandsSlice = createSlice({
@@ -14,10 +17,10 @@ export const errandsSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(listErrandsAction.pending, (state, action) => {
-      console.log('listErrands iniciou...');
+      // console.log('listErrands iniciou...');
     });
     builder.addCase(listErrandsAction.fulfilled, (state, action) => {
-      console.log('listErrands finalizado!');
+      // console.log('listErrands finalizado!');
       console.log(action.payload);
 
       return action.payload;

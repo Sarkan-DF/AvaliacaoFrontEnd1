@@ -4,7 +4,7 @@ export enum TransactionType {
 }
 
 export interface Errand {
-  id: string;
+  idErrands: string;
   title: string;
   description: string;
 }

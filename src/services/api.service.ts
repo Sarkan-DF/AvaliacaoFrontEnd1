@@ -15,7 +15,7 @@ interface ApiResponse {
 export class ApiService {
   public static async listErrands(iduser: string) {
     try {
-      const result = await api.get(`/login/${iduser}/errands`);
+      const result = await api.get(`/users/${iduser}/errands`);
       return result.data;
     } catch (error: any) {
       console.log(error.response.data);

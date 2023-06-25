@@ -16,43 +16,39 @@ export const HomePage = () => {
   const [erro, setErro] = useState(undefined);
 
   useEffect(() => {
-    dispatch(listErrandsAction());
+    // dispatch(listErrandsAction({ id: 'c9ca7590-0978-4dbb-b29d-5328e7e804fe' }));
+    const isUserLogged = !!user.idUser;
+    if (!isUserLogged) {
+      navigate('/login');
+      return;
+    }
+
+    listApi();
   }, []);
 
-  // const listApi = async () => {
-  //   const result = await dispatch(
-  //     listTransactionsAction({
-  //       id: user.id,
-  //       type: TransactionType.Income
-  //     })
-  //   );
+  const listApi = async () => {
+    const result = await dispatch(
+      listErrandsAction({
+        // idUser: 'e7d9ddf8-48ef-4651-9815-b5b93ca74b57'
+        idUser: user.idUser
+      })
+    );
 
-  //   if (!result.payload.ok) {
-  //     if (result.payload.message === 'User not found.') {
-  //       navigate('/login');
-  //       return;
-  //     }
+    console.log(user.idUser);
 
-  //     setErro(result.payload.message);
-  //   }
+    if (!result.payload.ok) {
+      if (result.payload.message === 'User not found.') {
+        navigate('/login');
+        return;
+      }
 
-  //   console.log(erro);
-  // };
-
-  // useEffect(() => {
-  //   const isUserLogged = !!user.id;
-
-  //   if (!isUserLogged) {
-  //     navigate('/login');
-  //     return;
-  //   }
-
-  //   listApi();
-  // }, []);
+      setErro(result.payload.message);
+    }
+  };
 
   return (
     <React.Fragment>
-      <h1>Bem-vindo a pagina de recados, {user.name}</h1>
+      <h1>Bem-vindo a pagina de recados, {user.email}</h1>
       <hr />
       <ErrandsList />
       {erro && <p style={{ color: 'red' }}>Erro: {erro}</p>}

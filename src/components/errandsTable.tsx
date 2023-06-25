@@ -29,7 +29,7 @@ export const ErrandsTable = (props: ErrandsTableProps) => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Id</TableCell>
+              {/* <TableCell>Id</TableCell> */}
               <TableCell align="right">Title</TableCell>
               <TableCell align="right">Description</TableCell>
             </TableRow>
@@ -37,16 +37,16 @@ export const ErrandsTable = (props: ErrandsTableProps) => {
           <TableBody>
             {props.errands.map((row: Errand) => (
               <TableRow
-                key={row.id}
+                key={row.idErrands}
                 sx={{
                   '&:last-child td, &:last-child th': {
                     border: 0
                   }
                 }}
               >
-                <TableCell component="th" scope="row">
-                  {row.id}
-                </TableCell>
+                {/* <TableCell component="th" scope="row">
+                  {row.num + 1}
+                </TableCell> */}
                 <TableCell align="right">{row.title}</TableCell>
                 <TableCell align="right">{row.description}</TableCell>
                 <TableCell align="right">
