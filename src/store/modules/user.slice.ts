@@ -5,8 +5,6 @@ import { LoginProps } from '../../models/login.model';
 
 export const loginAction = createAsyncThunk('user/login', async (props: LoginProps) => {
   const result = await ApiService.login(props);
-  console.log(result);
-
   return result;
 });
 

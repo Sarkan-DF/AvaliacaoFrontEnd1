@@ -28,7 +28,7 @@ const Form = styled.form`
   }
 `;
 
-export const LoginPage = () => {
+export const CadastroPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
 
@@ -54,13 +54,13 @@ export const LoginPage = () => {
     dispatch(loginAction(loginUser));
   };
 
-  const goCasdastro = () => {
-    navigate('/cadastro');
+  const goLogim = () => {
+    navigate('/login');
   };
 
   return (
     <MainLayout>
-      <h3>Login página de recados</h3>
+      <h3>Cadastro página de recados</h3>
 
       <Form onSubmit={submitLogin}>
         <Box>
@@ -90,13 +90,25 @@ export const LoginPage = () => {
         </Box>
         <br />
         <Box>
+          <TextField
+            required
+            className="input"
+            id="password"
+            name="password"
+            label="Confirma Senha"
+            variant="outlined"
+            type="password"
+          />
+        </Box>
+        <br />
+        <Box>
           <Button className="input" variant="contained" type="submit">
-            Login
+            Cadastrar Usuario
           </Button>
         </Box>
         <Typography paddingTop={2}>
-          Não tem usuario?
-          <Button variant="text" color="primary" onClick={goCasdastro}>
+          Já tem usuario?
+          <Button variant="text" color="primary" onClick={goLogim}>
             Clique Aqui!
           </Button>
         </Typography>
