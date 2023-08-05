@@ -3,10 +3,12 @@ import { styled } from 'styled-components';
 import TextField from '@mui/material/TextField';
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store';
 import { useEffect, useState } from 'react';
 import { loginAction } from '../store/modules/user.slice';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { ApiService } from '../services/api.service';
 
 const MainLayout = styled.div`
   height: 100%;
@@ -32,26 +34,21 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
 
+  // CAPTURA O ESTADO GLOBAL DO USER.SLICE
   const user = useSelector((state: RootState) => state.user);
 
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if (user.idUser) {
-      navigate('/');
-      return;
-    }
-  }, [user]);
+    console.log(user);
+  }, [dispatch, user]);
 
-  const submitLogin = (event: any) => {
-    event.preventDefault();
+  const submitLogin = async () => {
+    // DISPARA A LOGINACTION QUE SOLICITA PARA A API
+    // dispatch(loginAction({ email, password }));
 
-    const loginUser = {
-      email,
-      password: event.target.password.value
-    };
-
-    dispatch(loginAction(loginUser));
+    await ApiService.login({ email, password });
   };
 
   const goCasdastro = () => {
@@ -86,6 +83,7 @@ export const LoginPage = () => {
             label="Senha"
             variant="outlined"
             type="password"
+            onChange={e => setPassword(e.target.value)}
           />
         </Box>
         <br />

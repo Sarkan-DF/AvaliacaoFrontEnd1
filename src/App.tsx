@@ -1,9 +1,10 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { MainRouter } from './routes/router';
+
 import { store } from './store';
 import { ThemeProvider } from '@mui/material';
 import defaultTheme from './config/theme/defaultTheme';
+import { MainRouter } from './routes/AppRouter';
 
 function App() {
   return (

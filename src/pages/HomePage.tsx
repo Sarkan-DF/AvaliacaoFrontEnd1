@@ -11,44 +11,41 @@ export const HomePage = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
 
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.user.data);
 
   const [erro, setErro] = useState(undefined);
 
-  useEffect(() => {
-    // dispatch(listErrandsAction({ id: 'c9ca7590-0978-4dbb-b29d-5328e7e804fe' }));
-    const isUserLogged = !!user.idUser;
-    if (!isUserLogged) {
-      navigate('/login');
-      return;
-    }
+  // useEffect(() => {
+  //   // dispatch(listErrandsAction({ id: 'c9ca7590-0978-4dbb-b29d-5328e7e804fe' }));
+  //   const isUserLogged = !!user.idUser;
+  //   if (!isUserLogged) {
+  //     navigate('/login');
+  //     return;
+  //   }
 
-    listApi();
-  }, []);
+  //   listApi();
+  // }, []);
 
   const listApi = async () => {
-    const result = await dispatch(
-      listErrandsAction({
-        // idUser: 'e7d9ddf8-48ef-4651-9815-b5b93ca74b57'
-        idUser: user.idUser
-      })
-    );
-
-    console.log(user.idUser);
-
-    if (!result.payload.ok) {
-      if (result.payload.message === 'User not found.') {
-        navigate('/login');
-        return;
-      }
-
-      setErro(result.payload.message);
-    }
+    // const result = await dispatch(
+    //   listErrandsAction({
+    //     // idUser: 'e7d9ddf8-48ef-4651-9815-b5b93ca74b57'
+    //     idUser: user.idUser
+    //   })
+    // );
+    // console.log(user.idUser);
+    // if (!result.payload.ok) {
+    //   if (result.payload.message === 'User not found.') {
+    //     navigate('/login');
+    //     return;
+    //   }
+    //   setErro(result.payload.message);
+    // }
   };
 
   return (
     <React.Fragment>
-      <h1>Bem-vindo a pagina de recados, {user.email}</h1>
+      <h1>Bem-vindo a pagina de recados, </h1>
       <hr />
       <ErrandsList />
       {erro && <p style={{ color: 'red' }}>Erro: {erro}</p>}

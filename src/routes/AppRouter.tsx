@@ -20,5 +20,5 @@ export const MainRouter = () => {
     }
   ]);
 
-  return <RouterProvider router={routes}></RouterProvider>;
+  return <RouterProvider router={routes} />;
 };

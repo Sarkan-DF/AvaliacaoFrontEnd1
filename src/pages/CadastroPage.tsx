@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { useEffect, useState } from 'react';
 import { loginAction } from '../store/modules/user.slice';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 
 const MainLayout = styled.div`
   height: 100%;
@@ -30,9 +31,9 @@ const Form = styled.form`
 
 export const CadastroPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<any>();
+  const dispatch = useAppDispatch();
 
-  const user = useSelector((state: RootState) => state.user);
+  const user = useAppSelector(state => state.user.data);
 
   const [email, setEmail] = useState('');
 
