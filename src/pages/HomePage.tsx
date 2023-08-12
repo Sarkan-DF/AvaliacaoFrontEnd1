@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store';
 import { TransactionType } from '../models/errands.model';
 import { listErrandsAction } from '../store/modules/errands.slice';
+import { Box, Button } from '@mui/material';
+import { setInitialState } from '../store/modules/user.slice';
 
 export const HomePage = () => {
   const dispatch = useDispatch<any>();
@@ -13,39 +15,45 @@ export const HomePage = () => {
 
   const user = useSelector((state: RootState) => state.user.data);
 
+  const [idUserLogged, setIdUserLogged] = useState('');
   const [erro, setErro] = useState(undefined);
 
-  // useEffect(() => {
-  //   // dispatch(listErrandsAction({ id: 'c9ca7590-0978-4dbb-b29d-5328e7e804fe' }));
-  //   const isUserLogged = !!user.idUser;
-  //   if (!isUserLogged) {
-  //     navigate('/login');
-  //     return;
-  //   }
+  useEffect(() => {
+    // VAI NO LOCALSTORAGE BUSCAR O VALOR DA CHAVE = idUserLogged
+    const id = localStorage.getItem('idUserLogged');
 
-  //   listApi();
-  // }, []);
+    let idParse;
+    try {
+      if (id) {
+        idParse = JSON.parse(id);
+      }
+    } catch (error) {
+      idParse = undefined;
+    }
 
-  const listApi = async () => {
-    // const result = await dispatch(
-    //   listErrandsAction({
-    //     // idUser: 'e7d9ddf8-48ef-4651-9815-b5b93ca74b57'
-    //     idUser: user.idUser
-    //   })
-    // );
-    // console.log(user.idUser);
-    // if (!result.payload.ok) {
-    //   if (result.payload.message === 'User not found.') {
-    //     navigate('/login');
-    //     return;
-    //   }
-    //   setErro(result.payload.message);
-    // }
+    if (!idParse) {
+      navigate('/login');
+      return;
+    }
+    setIdUserLogged(idParse);
+  }, []);
+
+  const logout = () => {
+    localStorage.clear();
+    dispatch(setInitialState());
+    setTimeout(() => {
+      navigate('/login');
+    }, 2000);
   };
 
   return (
     <React.Fragment>
       <h1>Bem-vindo a pagina de recados, </h1>
+      <Box>
+        <Button variant="contained" type="button" onClick={logout}>
+          Logout
+        </Button>
+      </Box>
       <hr />
       <ErrandsList />
       {erro && <p style={{ color: 'red' }}>Erro: {erro}</p>}

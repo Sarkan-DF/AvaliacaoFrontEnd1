@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { LoginProps } from '../models/login.model';
 import { DeleteTransactionsProps, ListTransactionsProps, UpdateTransactionsProps } from '../models/errands.model';
+import { CreateUserProps } from '../models/user.model';
 
-// const api = axios.create({
-//   baseURL: 'http://localhost:8080'
-// });
-
-axios.defaults.baseURL = 'http://localhost:8080';
+const api = axios.create({
+  baseURL: 'http://localhost:8080'
+});
 
 export interface ApiResponse {
   ok: boolean;
@@ -15,9 +14,12 @@ export interface ApiResponse {
 }
 
 export class ApiService {
-  public static async listErrands(iduser: string) {
+  public static async login(props: LoginProps): Promise<ApiResponse> {
     try {
-      const result = await axios.get(`/users/${iduser}/errands`);
+      const result = await api.post('/users/login', props);
+
+      // result = {...., data: { ok: message: data: }}
+
       return result.data;
     } catch (error: any) {
       console.log(error.response.data);
@@ -25,14 +27,23 @@ export class ApiService {
     }
   }
 
-  public static async login(props: LoginProps): Promise<ApiResponse> {
+  public static async createUser(props: CreateUserProps): Promise<ApiResponse> {
     try {
-      const result = await axios.post('/users/login', props);
+      // PRIMEIRO SEMPRE A ROTA (MESMA USADA NO BACK), SEGUNDO É BODY (QUANDO FOR POST)
+      // {email: '', password: ''}
+      const result = await api.post('/users', props);
 
-      // result = {...., data: { ok: message: data: }}
+      // ESSE DATA É O DA REQUISIÇÃO - {ok: boolean, message: string...}
+      return result.data;
+    } catch (error: any) {
+      console.log(error.response.data);
+      return error.response.data;
+    }
+  }
 
-      console.log(result.data);
-
+  public static async listErrands(iduser: string) {
+    try {
+      const result = await api.get(`/users/${iduser}/errands`);
       return result.data;
     } catch (error: any) {
       console.log(error.response.data);
@@ -42,7 +53,7 @@ export class ApiService {
 
   public static async deleteTransaction(props: DeleteTransactionsProps): Promise<ApiResponse> {
     try {
-      const result = await axios.delete(`/users/${props.id}/transactions/${props.idTransaction}`);
+      const result = await api.delete(`/users/${props.id}/transactions/${props.idTransaction}`);
       return result.data;
     } catch (error: any) {
       console.log(error.response.data);
@@ -52,7 +63,7 @@ export class ApiService {
 
   public static async updateTransaction(props: UpdateTransactionsProps): Promise<ApiResponse> {
     try {
-      const result = await axios.put(`/users/${props.id}/transactions/${props.idTransaction}`, props);
+      const result = await api.put(`/users/${props.id}/transactions/${props.idTransaction}`, props);
       return result.data;
     } catch (error: any) {
       console.log(error.response.data);

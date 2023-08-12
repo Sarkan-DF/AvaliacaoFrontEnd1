@@ -1,58 +1,80 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { styled } from 'styled-components';
 import TextField from '@mui/material/TextField';
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store';
 import { useEffect, useState } from 'react';
-import { loginAction } from '../store/modules/user.slice';
+import { createUserAction, loginAction } from '../store/modules/user.slice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-
-const MainLayout = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-`;
-
-const Form = styled.form`
-  padding: 20px;
-  border: 1px solid #888;
-  border-radius: 8px;
-  width: 40%;
-
-  .input {
-    width: 100%;
-  }
-`;
+import { MainLayout } from '../components/MainLayout';
+import { Form } from '../components/Form';
+import { MyAlert } from '../components/MyAlert';
 
 export const CadastroPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const user = useAppSelector(state => state.user.data);
+  const user = useAppSelector(state => state.user);
 
+  // INPUTS
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [rePassword, setRePassword] = useState('');
 
+  //  ALERTS
+  const [openAlert, setOpenAlert] = useState(false);
+  const [typeAlert, setTypeAlert] = useState<'success' | 'info' | 'error' | 'warning'>('success');
+  const [messageAlert, setMessageAlert] = useState('');
+
+  /// FICA OUVINDO NOSSO ESTADO GLOBAL P/ MOSTRAR O NOSSO ALERTA
   useEffect(() => {
-    if (user.idUser) {
+    const id = localStorage.getItem('idUserLogged');
+
+    if (id) {
       navigate('/');
       return;
     }
+
+    if (user.ok) {
+      alert(user.message, 'success');
+      clearInputs();
+      navigation();
+    } else if (!user.ok && user.message !== '') {
+      alert(user.message, 'error');
+    }
   }, [user]);
 
-  const submitLogin = (event: any) => {
-    event.preventDefault();
+  const clearInputs = () => {
+    setRePassword('');
+    setPassword('');
+    setEmail('');
+  };
 
-    const loginUser = {
-      email,
-      password: event.target.password.value
-    };
+  const navigation = () => {
+    setTimeout(() => {
+      navigate('/login');
+    }, 3000);
+  };
 
-    dispatch(loginAction(loginUser));
+  const submitCadastro = () => {
+    if (!email || !password || !rePassword) {
+      alert('Preencha todos os campos!', 'warning');
+      return;
+    }
+
+    if (password !== rePassword) {
+      alert('Senhas não condizem!', 'warning');
+      return;
+    }
+
+    const newUser = { email, password };
+
+    dispatch(createUserAction(newUser));
+  };
+
+  const alert = (message: string, type: 'success' | 'info' | 'error' | 'warning') => {
+    setOpenAlert(true);
+    setMessageAlert(message);
+    setTypeAlert(type);
   };
 
   const goLogim = () => {
@@ -63,7 +85,7 @@ export const CadastroPage = () => {
     <MainLayout>
       <h3>Cadastro página de recados</h3>
 
-      <Form onSubmit={submitLogin}>
+      <Form>
         <Box>
           <TextField
             required
@@ -86,6 +108,8 @@ export const CadastroPage = () => {
             name="password"
             label="Senha"
             variant="outlined"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
             type="password"
           />
         </Box>
@@ -98,12 +122,14 @@ export const CadastroPage = () => {
             name="password"
             label="Confirma Senha"
             variant="outlined"
+            value={rePassword}
+            onChange={e => setRePassword(e.target.value)}
             type="password"
           />
         </Box>
         <br />
         <Box>
-          <Button className="input" variant="contained" type="submit">
+          <Button className="input" variant="contained" type="button" onClick={submitCadastro}>
             Cadastrar Usuario
           </Button>
         </Box>
@@ -114,6 +140,7 @@ export const CadastroPage = () => {
           </Button>
         </Typography>
       </Form>
+      <MyAlert open={openAlert} handleClose={() => setOpenAlert(false)} message={messageAlert} type={typeAlert} />
     </MainLayout>
   );
 };
